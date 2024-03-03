@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD</title>
+    
+    <style>
+        form.inline-form {
+            display: inline;
+            margin: 0;
+            padding: 0;
+        }
+        table, th, td {
+            padding: 5px;
+            text-align: left;
+            /* border: 1px solid gray;
+            border-collapse: collapse; */
+        }
+        input {
+            border: 1px solid black;
+            border-style: solid;
+            border-width: 1px;
+            width: 100px;
+        }
+    </style>
+
+    <script>
+        function updateForm(id) {
+            document.getElementById('update_' + id).style.display = 'block';
+            document.getElementById('update_msg_' + id).style.display = 'block';
+        }
+    </script>
+
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="p-4">
+    <div class="border border-blue-500 border-4 p-4">
+        <h1 class="text-4xl mb-4"><b>MongoDB Collection Records</b></h1>
+        <p>There are <b>{{ num_records }}</b> records:</p><br>
+        <div class="records">
+            <table class="table-fixed">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>City</th>
+                        <th>Email</th>
+                        <th>Operation</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody> 
+                    {% for record in records %}
+                        <tr id="record_{{ record._id }}">
+                            <td>
+                                {{ record.name }}
+                            </td>
+                            <td>
+                                {{ record.age }}
+                            </td>
+                            <td>
+                                {{ record.city }}
+                            </td>
+                            <td>
+                                {{ record.email }}
+                            </td>
+                            <td>
+                                <form class="inline-form" action="/delete/{{ record._id }}" method="POST">
+                                    <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" type="submit">
+                                        Delete
+                                    </button>
+                                </form>
+                                <form class="inline-form">
+                                    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" type="button" onclick="updateForm('{{ record._id }}')">
+                                        Update
+                                    </button>
+                                </form>
+                            </td>
+                            <td> 
+                                <form id="update_{{ record._id }}" style="display: none;" action="/update/{{ record._id }}" method="POST">
+                                    <input type="text" id="update_name" name="update_name" value="{{ record.name }}">
+                                    <input type="number" id="update_age" name="update_age" value="{{ record.age }}">
+                                    <input type="text" id="update_city" name="update_city" value="{{ record.city }}">
+                                    <input type="text" id="update_email" name="update_email" value="{{ record.email }}">
+                                    <button class="shadow bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
+                                        OK
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table> 
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="border border-blue-500 border-4 p-4">
+        <h2 class="text-2xl mb-4"><b>Add New Record:</b></h2>
+        <form class="w-full max-w-sm" action="/" method="POST">
+            <div class="md:flex md:items-center mb-6">
+                <div class="md:w-1/3">
+                    <label class="block text-black-500 md:text-right mb-1 md:mb-0 pr-4" for="name">
+                        Name
+                    </label>
+                </div>
+                <div class="md:w-2/3">
+                    <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="name" name="name" type="text">
+                </div>
+            </div>
+            <div class="md:flex md:items-center mb-6">
+                <div class="md:w-1/3">
+                    <label class="block text-black-500 md:text-right mb-1 md:mb-0 pr-4" for="age">
+                        Age
+                    </label>
+                </div>
+                <div class="md:w-2/3">
+                    <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="age" name="age" type="number">
+                </div>
+            </div>
+            <div class="md:flex md:items-center mb-6">
+                <div class="md:w-1/3">
+                    <label class="block text-black-500 md:text-right mb-1 md:mb-0 pr-4" for="city">
+                        City
+                    </label>
+                </div>
+                <div class="md:w-2/3">
+                    <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="city" name="city" type="text">
+                </div>
+            </div>
+            <div class="md:flex md:items-center mb-6">
+                <div class="md:w-1/3">
+                    <label class="block text-black-500 md:text-right mb-1 md:mb-0 pr-4" for="email">
+                        Email
+                    </label>
+                </div>
+                <div class="md:w-2/3">
+                    <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="email" name="email" type="text">
+                </div>
+            </div>
+            <div class="md:flex md:items-center">
+                <div class="md:w-1/3"></div>
+                <div class="md:w-2/3">
+                    <button class="shadow bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
+                        Add
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
