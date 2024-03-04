@@ -6,7 +6,7 @@ Performing CRUD operations on DB from client UI.
 ** _server.py_.
 
 ## Frontend/ Client: HTML, Tailwind, JS
-** _index.html_
+** _index.html_.
 
 ## DB: MongoDB
 ** Collection's document format:
