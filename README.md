@@ -16,4 +16,5 @@ Performing CRUD operations on DB from client UI.
   age: <Int32>
   city: <String>
   email: <String>
+}
 ```
